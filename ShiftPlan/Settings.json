@@ -1,0 +1,22 @@
+{
+    "Service": {
+        "ServiceName": "Service",
+        "DisplayName": "Service",
+        "Description": "Service"
+    },
+    "Mail": {
+        "Incoming": "",
+        "Outgoing": "",
+        "User": "",
+        "Password": "",
+        "Indicator": "ShiftPlan",
+        "Port": 993 
+    },
+    "Ftp": {
+        "Server": "",
+        "User": "",
+        "Password": ""
+    },
+    "CheckInterval": 15,
+    "LastRun": "0001-01-01" 
+}
