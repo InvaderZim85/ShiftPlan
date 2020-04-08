@@ -16,6 +16,15 @@ namespace ShiftPlan.Global
         private static Settings _settings;
 
         /// <summary>
+        /// Contains the path of the settings file
+        /// </summary>
+#if DEBUG
+        private static readonly string SettingsFile = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings_Debug.json");
+#else
+        private static readonly string SettingsFile = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings.json");
+#endif
+
+        /// <summary>
         /// Gets the settings of the service
         /// </summary>
         public static Settings Settings => _settings ?? (_settings = LoadSettings());
@@ -26,12 +35,10 @@ namespace ShiftPlan.Global
         /// <returns>The settings</returns>
         private static Settings LoadSettings()
         {
-            var path = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings.json");
+            if (!File.Exists(SettingsFile))
+                throw new FileNotFoundException("The settings are missing.", SettingsFile);
 
-            if (!File.Exists(path))
-                throw new FileNotFoundException("The settings are missing.", path);
-
-            var content = File.ReadAllText(path);
+            var content = File.ReadAllText(SettingsFile);
 
             return JsonConvert.DeserializeObject<Settings>(content);
         }
@@ -43,11 +50,9 @@ namespace ShiftPlan.Global
         {
             Settings.LastRun = DateTime.Now;
 
-            var path = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings.json");
-
             var content = JsonConvert.SerializeObject(Settings, Formatting.Indented);
 
-            File.WriteAllText(path, content);
+            File.WriteAllText(SettingsFile, content);
         }
 
         /// <summary>

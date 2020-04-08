@@ -1,8 +1,8 @@
 {
     "Service": {
-        "ServiceName": "Service",
-        "DisplayName": "Service",
-        "Description": "Service"
+        "ServiceName": "ShiftPlan",
+        "DisplayName": "EMP ShiftPlan",
+        "Description": "Service which checks in a given interval an email inbox. If the inbox contains a mail with a given subject, the mail will be downloaded and the content will be parsed. The parsed data creates a html page which will be uploaded via FTP."
     },
     "Mail": {
         "Incoming": "",

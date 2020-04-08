@@ -78,6 +78,8 @@
   <ItemGroup>
     <Compile Include="Business\FtpManager.cs" />
     <Compile Include="Business\MailManager.cs" />
+    <Compile Include="Business\ShiftPlanManager.cs" />
+    <Compile Include="DataObjects\DayEntry.cs" />
     <Compile Include="DataObjects\FtpSettings.cs" />
     <Compile Include="DataObjects\MailSettings.cs" />
     <Compile Include="DataObjects\ServiceSettings.cs" />
@@ -107,6 +109,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Settings_Debug.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

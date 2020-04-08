@@ -17,14 +17,14 @@ namespace ShiftPlan
         /// <summary>
         /// Contains the mail manager
         /// </summary>
-        private MailManager _manager;
+        private ShiftPlanManager _manager;
 
         /// <summary>
         /// Starts the service
         /// </summary>
         public void Start()
         {
-            _manager = new MailManager();
+            _manager = new ShiftPlanManager();
             _manager.Run();
 
             ServiceLogger.Info("Service started.");

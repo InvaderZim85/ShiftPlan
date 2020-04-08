@@ -14,8 +14,8 @@ namespace ShiftPlan.DataObjects
         public DateTime Start { get; set; }
 
         /// <summary>
-        /// Gets or sets the list with the persons
+        /// Gets or sets the day entries
         /// </summary>
-        public List<string> Persons { get; set; }
+        public List<DayEntry> Days { get; set; } = new List<DayEntry>();
     }
 }
