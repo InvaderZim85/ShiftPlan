@@ -18,8 +18,8 @@ namespace ShiftPlan.Core.DataObjects
         public string Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the value which indicates if the day is a holiday
+        /// Gets or sets the type of the day (default = normal)
         /// </summary>
-        public bool Holiday { get; set; }
+        public CustomEnums.DayType Type { get; set; } = CustomEnums.DayType.Normal;
     }
 }

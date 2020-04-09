@@ -71,13 +71,12 @@
     <Reference Include="Topshelf.NLog, Version=4.2.1.215, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>..\packages\Topshelf.NLog.4.2.1\lib\net452\Topshelf.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ZimLabs.Utility, Version=0.1.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZimLabs.Utility.0.1.3\lib\net472\ZimLabs.Utility.dll</HintPath>
+    <Reference Include="ZimLabs.CoreLib, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZimLabs.CoreLib.1.0.2\lib\netstandard2.0\ZimLabs.CoreLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ShiftPlanManager.cs" />
-    <Compile Include="Global\Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceManager.cs" />
@@ -89,13 +88,7 @@
     <Content Include="readme.txt" />
     <None Include="App.config" />
     <None Include="ExampleContent.json" />
-    <None Include="Settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-    <None Include="Settings_Debug.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShiftPlan.Core\ShiftPlan.Core.csproj">

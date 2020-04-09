@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using ShiftPlan.Core;
-using ShiftPlan.Global;
 using Topshelf;
-using ZimLabs.Utility.Extensions;
+using ZimLabs.CoreLib.Extensions;
 
 namespace ShiftPlan
 {

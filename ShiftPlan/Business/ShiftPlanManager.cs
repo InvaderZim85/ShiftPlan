@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Timers;
 using ShiftPlan.Core;
 using ShiftPlan.Core.Business;
 using ShiftPlan.Core.DataObjects;
-using ShiftPlan.Global;
-using ZimLabs.Utility.Extensions;
 
 namespace ShiftPlan.Business
 {
@@ -16,6 +15,11 @@ namespace ShiftPlan.Business
     /// </summary>
     internal sealed class ShiftPlanManager : IDisposable
     {
+        /// <summary>
+        /// Contains the value which indicates if the class was already disposed
+        /// </summary>
+        private bool _disposed;
+
         /// <summary>
         /// Timer for the check interval
         /// </summary>
@@ -27,9 +31,9 @@ namespace ShiftPlan.Business
         private bool _firstExecution = true;
 
         /// <summary>
-        /// Contains the value which indicates if the class was already disposed
+        /// Contains the hash value of the mail body
         /// </summary>
-        private bool _disposed;
+        private string _bodyHash;
 
         /// <summary>
         /// Init the mail manager
@@ -70,9 +74,24 @@ namespace ShiftPlan.Business
         private void CheckMail()
         {
             var body = MailManager.GetMailContent(Helper.Settings.Mail, Helper.Settings.LastRun);
-
+            
             if (string.IsNullOrEmpty(body))
                 return;
+
+            // Check if the last run was the last day, when yes, reset the body hash value
+            if (Helper.Settings.LastRun.Day != DateTime.Now.Day)
+                _bodyHash = "";
+
+            // Compare the hash code
+            var currentHash = body.GetMd5();
+
+            if (!string.IsNullOrEmpty(_bodyHash) && _bodyHash.Equals(currentHash))
+            {
+                ServiceLogger.Info("Content equals. Skip page creation.");
+                return;
+            }
+
+            _bodyHash = currentHash;
 
             CreateHtmlPage(body);
         }
@@ -88,6 +107,12 @@ namespace ShiftPlan.Business
             // Step 1: Try to convert the body
             var data = ConvertMailBody(content);
 
+            if (data == null)
+            {
+                ServiceLogger.Error("Stop page creation.");
+                return;
+            }
+
             var personList = new List<DayEntry>();
 
             var count = 0;
@@ -102,7 +127,7 @@ namespace ShiftPlan.Business
                     {
                         Date = date,
                         Value = date.DayOfWeek.ToString(),
-                        Holiday = true
+                        Type = CustomEnums.DayType.Weekend
                     };
 
                     personList.Add(dayEntry);
@@ -125,10 +150,25 @@ namespace ShiftPlan.Business
 
             foreach (var entry in personList)
             {
-                if (entry.Holiday)
-                    tableBody.AppendLine("<tr class=\"table-dark text-dark\">");
+                if (entry.Date.Date == DateTime.Now.Date)
+                {
+                    tableBody.AppendLine("<tr class=\"table-primary text-dark today\">");
+                }
                 else
-                    tableBody.AppendLine("<tr>");
+                {
+                    switch (entry.Type)
+                    {
+                        case CustomEnums.DayType.Normal:
+                            tableBody.AppendLine("<tr>");
+                            break;
+                        case CustomEnums.DayType.Holiday:
+                            tableBody.AppendLine("<tr class=\"table-warning text-dark\">");
+                            break;
+                        case CustomEnums.DayType.Weekend:
+                            tableBody.AppendLine("<tr class=\"table-dark text-dark\">");
+                            break;
+                    }
+                }
 
                 tableBody.AppendLine($"<td>{Helper.GetCalendarWeek(entry.Date)}</td>");
                 tableBody.AppendLine($"<td>{entry.Date.DayOfWeek}, {entry.Date:dd.MM.yyyy}</td>");
@@ -173,11 +213,19 @@ namespace ShiftPlan.Business
             var result = new ShiftPlanData();
 
             var count = 0;
-            foreach (var line in lines)
+            foreach (var line in lines.Where(w => !w.StartsWith("#")))
             {
                 if (count == 0)
                 {
-                    result.Start = line.ToDateTime();
+                    if (DateTime.TryParse(line, out var date))
+                    {
+                        result.Start = date;
+                    }
+                    else
+                    {
+                        ServiceLogger.Info("Can't parse data.");
+                        return null;
+                    }
                 }
                 else
                 {
@@ -186,7 +234,7 @@ namespace ShiftPlan.Business
                     var dayEntry = new DayEntry
                     {
                         Value = line.Replace("|h", ""),
-                        Holiday = holiday
+                        Type = holiday ? CustomEnums.DayType.Holiday : CustomEnums.DayType.Normal
                     };
 
                     result.Days.Add(dayEntry);
@@ -204,7 +252,7 @@ namespace ShiftPlan.Business
         /// <returns>The content of the template</returns>
         private string LoadTemplate()
         {
-            var path = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "index.html");
+            var path = Path.Combine(Helper.GetBaseFolder(), "index.html");
 
             return File.ReadAllText(path);
         }
@@ -216,7 +264,7 @@ namespace ShiftPlan.Business
         /// <returns>The destination file</returns>
         private FileInfo SaveData(string content)
         {
-            var dir = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "files");
+            var dir = Path.Combine(Helper.GetBaseFolder(), "files");
             Directory.CreateDirectory(dir);
 
             var file = Path.Combine(dir, $"ShiftPlan_{DateTime.Now:yyyyMMdd_HHmmss}.html");

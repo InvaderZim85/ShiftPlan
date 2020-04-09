@@ -1,0 +1,22 @@
+{
+  "Service": {
+    "ServiceName": "Service",
+    "DisplayName": "Service",
+    "Description": "Service"
+  },
+  "Mail": {
+    "Incoming": "mail.your-server.de",
+    "Outgoing": "mail.your-server.de",
+    "Indicator": "ShiftPlan",
+    "Port": 993,
+    "User": "info@de-boddels.de",
+    "Password": "Br00dw4r"
+  },
+  "Ftp": {
+    "Server": "ftp://213.133.104.176",
+    "User": "dedbod_5",
+    "Password": "a8RC3tYhdJn1kckx"
+  },
+  "CheckInterval": 1,
+  "LastRun": "2020-04-09T19:21:56.3471375+02:00"
+}

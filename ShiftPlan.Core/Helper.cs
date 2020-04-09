@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using Newtonsoft.Json;
-using ShiftPlan.Core;
 using ShiftPlan.Core.DataObjects;
 
-namespace ShiftPlan.Global
+namespace ShiftPlan.Core
 {
     /// <summary>
     /// Provides several helper functions
     /// </summary>
-    internal static class Helper
+    public static class Helper
     {
         /// <summary>
         /// Backing field for <see cref="Settings"/>
@@ -20,9 +22,9 @@ namespace ShiftPlan.Global
         /// Contains the path of the settings file
         /// </summary>
 #if DEBUG
-        private static readonly string SettingsFile = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings_Debug.json");
+        private static readonly string SettingsFile = Path.Combine(GetBaseFolder(), "Settings_Debug.json");
 #else
-        private static readonly string SettingsFile = Path.Combine(ZimLabs.Utility.Global.GetBaseFolder(), "Settings.json");
+        private static readonly string SettingsFile = Path.Combine(GetBaseFolder(), "Settings.json");
 #endif
 
         /// <summary>
@@ -85,6 +87,15 @@ namespace ShiftPlan.Global
         }
 
         /// <summary>
+        /// Gets the path of the base folder
+        /// </summary>
+        /// <returns>The path of the base folder</returns>
+        public static string GetBaseFolder()
+        {
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        /// <summary>
         /// Calculates the calendar week of the given date
         /// </summary>
         /// <param name="date">The desired date</param>
@@ -109,6 +120,26 @@ namespace ShiftPlan.Global
 
             // Die ermittelte Kalenderwoche zurückgeben
             return calendarWeek;
+        }
+
+        /// <summary>
+        /// Computes the hash code of the given string
+        /// </summary>
+        /// <param name="value">The string value</param>
+        /// <returns>The computed hash code</returns>
+        public static string GetMd5(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "";
+
+            using (var md5 = MD5.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(value);
+
+                var hashCode = md5.ComputeHash(bytes);
+
+                return BitConverter.ToString(hashCode);
+            }
         }
     }
 }
