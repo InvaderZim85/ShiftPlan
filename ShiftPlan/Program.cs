@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ShiftPlan.Business;
+using ShiftPlan.Core;
 using ShiftPlan.Global;
 using Topshelf;
 using ZimLabs.Utility.Extensions;

@@ -1,9 +1,9 @@
-﻿namespace ShiftPlan.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Represents the ftp settings
     /// </summary>
-    internal sealed class FtpSettings : UserEntry
+    public sealed class FtpSettings : UserEntry
     {
         /// <summary>
         /// Gets or sets the address of the ftp server

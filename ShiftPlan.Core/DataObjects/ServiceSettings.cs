@@ -1,9 +1,9 @@
-﻿namespace ShiftPlan.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Provides the settings for the topshelf service
     /// </summary>
-    internal class ServiceSettings
+    public class ServiceSettings
     {
         /// <summary>
         /// Gets or sets the name of the service

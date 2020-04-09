@@ -1,9 +1,9 @@
-﻿namespace ShiftPlan.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Represents the mail settings
     /// </summary>
-    internal sealed class MailSettings : UserEntry
+    public sealed class MailSettings : UserEntry
     {
         /// <summary>
         /// Gets or sets the address of the incoming mail server

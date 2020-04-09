@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Timers;
-using ShiftPlan.DataObjects;
+using ShiftPlan.Core;
+using ShiftPlan.Core.Business;
+using ShiftPlan.Core.DataObjects;
 using ShiftPlan.Global;
 using ZimLabs.Utility.Extensions;
 
@@ -67,7 +69,7 @@ namespace ShiftPlan.Business
         /// </summary>
         private void CheckMail()
         {
-            var body = MailManager.GetMailContent();
+            var body = MailManager.GetMailContent(Helper.Settings.Mail, Helper.Settings.LastRun);
 
             if (string.IsNullOrEmpty(body))
                 return;
@@ -144,7 +146,7 @@ namespace ShiftPlan.Business
             var file = SaveData(template);
 
             // Upload the file
-            FtpManager.Upload(file);
+            FtpManager.Upload(file, Helper.Settings.Ftp);
 
             Helper.SaveLastRun();
         }

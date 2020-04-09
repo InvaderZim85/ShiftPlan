@@ -1,26 +1,27 @@
 ﻿using System.IO;
 using System.Net;
-using ShiftPlan.Global;
+using ShiftPlan.Core.DataObjects;
 
-namespace ShiftPlan.Business
+namespace ShiftPlan.Core.Business
 {
     /// <summary>
     /// Provides the functions for the interaction with the ftp server
     /// </summary>
-    internal static class FtpManager
+    public static class FtpManager
     {
         /// <summary>
         /// Uploads the given file
         /// </summary>
         /// <param name="filepath">The file which should be uploaded</param>
-        public static void Upload(FileInfo filepath)
+        /// <param name="settings">The settings of the ftp server</param>
+        public static void Upload(FileInfo filepath, FtpSettings settings)
         {
             ServiceLogger.Info($"Upload '{filepath.Name}'");
-            var destination = CreateDestinationName();
+            var destination = CreateDestinationName(settings.Server);
 
             using (var client = new WebClient())
             {
-                client.Credentials = new NetworkCredential(Helper.Settings.Ftp.User, Helper.Settings.Ftp.Password);
+                client.Credentials = new NetworkCredential(settings.User, settings.Password);
                 client.UploadFile(destination, WebRequestMethods.Ftp.UploadFile, filepath.FullName);
             }
         }
@@ -28,10 +29,10 @@ namespace ShiftPlan.Business
         /// <summary>
         /// Creates the path for the destination (ftp server + index.html)
         /// </summary>
+        /// <param name="server">The path of the server</param>
         /// <returns>The destination name</returns>
-        private static string CreateDestinationName()
+        private static string CreateDestinationName(string server)
         {
-            var server = Helper.Settings.Ftp.Server;
             if (!server.EndsWith("/"))
                 server += "/";
 

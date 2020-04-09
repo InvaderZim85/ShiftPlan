@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
-using ShiftPlan.DataObjects;
 using Newtonsoft.Json;
+using ShiftPlan.Core;
+using ShiftPlan.Core.DataObjects;
 
 namespace ShiftPlan.Global
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using ShiftPlan.Business;
-using ShiftPlan.Global;
+using ShiftPlan.Core;
 
 namespace ShiftPlan
 {

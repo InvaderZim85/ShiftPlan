@@ -1,12 +1,12 @@
 ﻿using System;
 using NLog;
 
-namespace ShiftPlan.Global
+namespace ShiftPlan.Core
 {
     /// <summary>
     /// Provides several logging functions
     /// </summary>
-    internal static class ServiceLogger
+    public static class ServiceLogger
     {
         /// <summary>
         /// Contains the instance of the NLog logger

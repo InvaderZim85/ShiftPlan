@@ -1,9 +1,9 @@
-﻿namespace ShiftPlan.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Represents a user
     /// </summary>
-    internal class UserEntry
+    public class UserEntry
     {
         /// <summary>
         /// Gets or sets the name of the user

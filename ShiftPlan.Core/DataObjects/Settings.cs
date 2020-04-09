@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ShiftPlan.DataObjects
+namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Provides the settings 
     /// </summary>
-    internal sealed class Settings
+    public sealed class Settings
     {
         /// <summary>
         /// Gets or sets the service settings

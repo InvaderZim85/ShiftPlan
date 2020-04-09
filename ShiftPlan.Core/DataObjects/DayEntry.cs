@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ShiftPlan.DataObjects
+namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Represents a day entry
     /// </summary>
-    internal sealed class DayEntry
+    public sealed class DayEntry
     {
         /// <summary>
         /// Gets or sets the date of the day

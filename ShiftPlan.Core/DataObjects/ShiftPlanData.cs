@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ShiftPlan.DataObjects
+namespace ShiftPlan.Core.DataObjects
 {
     /// <summary>
     /// Represents the shift data
     /// </summary>
-    internal sealed class ShiftPlanData
+    public sealed class ShiftPlanData
     {
         /// <summary>
         /// Gets or sets the start date
