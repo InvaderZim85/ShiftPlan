@@ -352,3 +352,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /ShiftPlan/Settings_Debug.json
+/ShiftPlan.Core/Settings.json
+/ShiftPlan.Core/Settings_Debug.json

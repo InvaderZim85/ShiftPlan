@@ -59,6 +59,16 @@ namespace ShiftPlan.Core
         }
 
         /// <summary>
+        /// Converts the object into a JSON formatted string
+        /// </summary>
+        /// <param name="data">The data</param>
+        /// <returns>The JSON string</returns>
+        public static string ToJson(this object data)
+        {
+            return data == null ? "" : JsonConvert.SerializeObject(data, Formatting.Indented);
+        }
+
+        /// <summary>
         /// Converts the given string into the given object type
         /// </summary>
         /// <typeparam name="T">The type of the content</typeparam>

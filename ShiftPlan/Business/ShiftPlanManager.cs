@@ -80,7 +80,10 @@ namespace ShiftPlan.Business
 
             // Check if the last run was the last day, when yes, reset the body hash value
             if (Helper.Settings.LastRun.Day != DateTime.Now.Day)
+            {
+                ServiceLogger.Info("Day switched. Reset body hash");
                 _bodyHash = "";
+            }
 
             // Compare the hash code
             var currentHash = body.GetMd5();
