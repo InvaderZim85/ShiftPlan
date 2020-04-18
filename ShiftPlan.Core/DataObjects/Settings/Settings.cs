@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShiftPlan.Core.DataObjects
+namespace ShiftPlan.Core.DataObjects.Settings
 {
     /// <summary>
     /// Provides the settings 
@@ -18,9 +18,9 @@ namespace ShiftPlan.Core.DataObjects
         public MailSettings Mail { get; set; }
 
         /// <summary>
-        /// Gets or sets the ftp settings
+        /// Gets or sets the database settings
         /// </summary>
-        public FtpSettings Ftp { get; set; }
+        public Database Database { get; set; }
 
         /// <summary>
         /// Gets or sets the check interval (in minutes)

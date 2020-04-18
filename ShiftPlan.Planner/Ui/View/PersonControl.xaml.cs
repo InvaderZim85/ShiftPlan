@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using ShiftPlan.Core.DataObjects;
 
 namespace ShiftPlan.Planner.Ui.View
@@ -7,7 +6,7 @@ namespace ShiftPlan.Planner.Ui.View
     /// <summary>
     /// Interaction logic for PersonControl.xaml
     /// </summary>
-    public partial class PersonControl : UserControl
+    public partial class PersonControl
     {
         /// <summary>
         /// The dependency property of <see cref="Entry"/>

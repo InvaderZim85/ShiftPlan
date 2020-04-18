@@ -1,0 +1,25 @@
+{
+    "Service": {
+        "ServiceName": "Service",
+        "DisplayName": "Service",
+        "Description": "Service"
+    },
+    "Mail": {
+        "Incoming": "mail.your-server.de",
+        "Outgoing": "mail.your-server.de",
+        "Indicator": "ShiftPlan",
+        "IncomingPort": 993,
+        "OutgoingPort":  587, 
+        "User": "Mail User",
+        "Password": "Password"
+    },
+    "Database": {
+        "Server": "Server",
+        "Name": "Database", 
+        "User": "User",
+        "Password": "Password"
+
+    },
+    "CheckInterval": 1,
+    "LastRun": "2020-04-09T19:21:56.3471375+02:00"
+}

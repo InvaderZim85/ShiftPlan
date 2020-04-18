@@ -1,4 +1,4 @@
-﻿namespace ShiftPlan.Core.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects.Settings
 {
     /// <summary>
     /// Provides the settings for the topshelf service

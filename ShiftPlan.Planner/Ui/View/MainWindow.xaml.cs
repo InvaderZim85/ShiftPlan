@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using ShiftPlan.Planner.Ui.ViewModel;
 
@@ -8,7 +7,7 @@ namespace ShiftPlan.Planner.Ui.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
         /// <summary>
         /// Creates a new instance of the <see cref="MainWindow"/>

@@ -2,8 +2,12 @@
 using System.Linq;
 using MailKit;
 using MailKit.Net.Imap;
+using MailKit.Net.Smtp;
 using MailKit.Search;
+using MimeKit;
+using MimeKit.Text;
 using ShiftPlan.Core.DataObjects;
+using ShiftPlan.Core.DataObjects.Settings;
 
 namespace ShiftPlan.Core.Business
 {
@@ -25,7 +29,7 @@ namespace ShiftPlan.Core.Business
                 using (var client = new ImapClient())
                 {
                     // Create a connection
-                    client.Connect(settings.Incoming, settings.Port, true);
+                    client.Connect(settings.Incoming, settings.IncomingPort, true);
                     client.Authenticate(settings.User, settings.Password);
 
                     // Get the inbox
@@ -78,9 +82,35 @@ namespace ShiftPlan.Core.Business
         /// </summary>
         /// <param name="settings">The settings</param>
         /// <param name="data">The mail data</param>
-        public static void SendMail(MailSettings settings, MailData data)
+        /// <returns>true when successful, otherwise false</returns>
+        public static bool SendMail(MailSettings settings, MailData data)
         {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Shift Plan", settings.User));
+                message.To.Add(new MailboxAddress("Shift Plan", data.Receiver));
+                message.Subject = data.Subject;
+                message.Body = new TextPart(TextFormat.Plain)
+                {
+                    Text = data.Body
+                };
 
+                using (var client = new SmtpClient())
+                {
+                    client.Connect(settings.Outgoing, settings.OutgoingPort, false);
+                    client.Authenticate(settings.User, settings.Password);
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ServiceLogger.Error("An error has occured while sending the mail.", ex);
+                return false;
+            }
         }
     }
 }

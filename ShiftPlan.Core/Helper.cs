@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
-using ShiftPlan.Core.DataObjects;
+using ShiftPlan.Core.DataObjects.Settings;
 
 namespace ShiftPlan.Core
 {
@@ -122,8 +122,8 @@ namespace ShiftPlan.Core
 
             var d4 = (jd + 31741 - jd % 7) % 146097 % 36524 %
                      1461;
-            var L = Math.Floor(d4 / 1460);
-            var d1 = (d4 - L) % 365 + L;
+            var l = Math.Floor(d4 / 1460);
+            var d1 = (d4 - l) % 365 + l;
 
             // Kalenderwoche ermitteln
             var calendarWeek = (int) Math.Floor(d1 / 7) + 1;

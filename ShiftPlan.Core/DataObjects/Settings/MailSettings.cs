@@ -1,4 +1,4 @@
-﻿namespace ShiftPlan.Core.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects.Settings
 {
     /// <summary>
     /// Represents the mail settings
@@ -23,6 +23,11 @@
         /// <summary>
         /// Gets or sets the port of the imap server
         /// </summary>
-        public int Port { get; set; }
+        public int IncomingPort { get; set; }
+
+        /// <summary>
+        /// Gets or sets the port for the outgoing mails
+        /// </summary>
+        public int OutgoingPort { get; set; }
     }
 }

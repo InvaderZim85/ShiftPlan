@@ -71,8 +71,8 @@
     <Reference Include="Topshelf.NLog, Version=4.2.1.215, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>..\packages\Topshelf.NLog.4.2.1\lib\net452\Topshelf.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ZimLabs.CoreLib, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZimLabs.CoreLib.1.0.2\lib\netstandard2.0\ZimLabs.CoreLib.dll</HintPath>
+    <Reference Include="ZimLabs.CoreLib, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZimLabs.CoreLib.1.0.3\lib\netstandard2.0\ZimLabs.CoreLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShiftPlan.Core\ShiftPlan.Core.csproj">
-      <Project>{05c2634d-5c0e-405b-9ef7-9addad1a6ab3}</Project>
+      <Project>{54aae217-0374-47e3-9458-33b97c188c30}</Project>
       <Name>ShiftPlan.Core</Name>
     </ProjectReference>
   </ItemGroup>

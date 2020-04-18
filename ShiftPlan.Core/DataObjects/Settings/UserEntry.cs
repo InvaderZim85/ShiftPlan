@@ -1,4 +1,4 @@
-﻿namespace ShiftPlan.Core.DataObjects
+﻿namespace ShiftPlan.Core.DataObjects.Settings
 {
     /// <summary>
     /// Represents a user

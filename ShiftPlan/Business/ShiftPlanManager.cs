@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Timers;
 using ShiftPlan.Core;
 using ShiftPlan.Core.Business;
@@ -78,13 +75,6 @@ namespace ShiftPlan.Business
             if (string.IsNullOrEmpty(body))
                 return;
 
-            // Check if the last run was the last day, when yes, reset the body hash value
-            if (Helper.Settings.LastRun.Day != DateTime.Now.Day)
-            {
-                ServiceLogger.Info("Day switched. Reset body hash");
-                _bodyHash = "";
-            }
-
             // Compare the hash code
             var currentHash = body.GetMd5();
 
@@ -96,101 +86,16 @@ namespace ShiftPlan.Business
 
             _bodyHash = currentHash;
 
-            CreateHtmlPage(body);
-        }
+            // Converts the body
+            var data = ConvertMailBody(body);
 
-        /// <summary>
-        /// Creates the html page
-        /// </summary>
-        /// <param name="content">The content</param>
-        private void CreateHtmlPage(string content)
-        {
-            ServiceLogger.Info("Create html page");
-
-            // Step 1: Try to convert the body
-            var data = ConvertMailBody(content);
-
-            if (data == null)
+            // Save the data
+            using (var pagePlanManager = new PagePlanManager())
             {
-                ServiceLogger.Error("Stop page creation.");
-                return;
+                pagePlanManager.Save(data);
             }
 
-            var personList = new List<DayEntry>();
-
-            var count = 0;
-            var dateCount = 0;
-            var endDate = data.Start;
-            while (count < data.Days.Count)
-            {
-                var date = data.Start.AddDays(dateCount);
-                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    var dayEntry = new DayEntry
-                    {
-                        Date = date,
-                        Value = date.DayOfWeek.ToString(),
-                        Type = CustomEnums.DayType.Weekend
-                    };
-
-                    personList.Add(dayEntry);
-                    dateCount++;
-                    continue;
-                }
-
-                var tmpDayEntry = data.Days[count];
-                tmpDayEntry.Date = date;
-
-                personList.Add(tmpDayEntry);
-
-                endDate = date;
-                dateCount++;
-                count++;
-            }
-
-            // Create the table body
-            var tableBody = new StringBuilder();
-
-            foreach (var entry in personList)
-            {
-                if (entry.Date.Date == DateTime.Now.Date)
-                {
-                    tableBody.AppendLine("<tr class=\"table-primary text-dark today\">");
-                }
-                else
-                {
-                    switch (entry.Type)
-                    {
-                        case CustomEnums.DayType.Normal:
-                            tableBody.AppendLine("<tr>");
-                            break;
-                        case CustomEnums.DayType.Holiday:
-                            tableBody.AppendLine("<tr class=\"table-warning text-dark\">");
-                            break;
-                        case CustomEnums.DayType.Weekend:
-                            tableBody.AppendLine("<tr class=\"table-dark text-dark\">");
-                            break;
-                    }
-                }
-
-                tableBody.AppendLine($"<td>{Helper.GetCalendarWeek(entry.Date)}</td>");
-                tableBody.AppendLine($"<td>{entry.Date.DayOfWeek}, {entry.Date:dd.MM.yyyy}</td>");
-                tableBody.AppendLine($"<td>{entry.Value}</td></tr>");
-            }
-
-            // Load the html template
-            var template = LoadTemplate();
-
-            template = template.Replace("@Content.Start", data.Start.ToString("dd.MM.yyyy"));
-            template = template.Replace("@Content.End", endDate.ToString("dd.MM.yyyy"));
-            template = template.Replace("@Content.Table", tableBody.ToString());
-            template = template.Replace("@Content.CreationDate", DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"));
-
-            var file = SaveData(template);
-
-            // Upload the file
-            FtpManager.Upload(file, Helper.Settings.Ftp);
-
+            // Set the last run
             Helper.SaveLastRun();
         }
 
@@ -216,6 +121,7 @@ namespace ShiftPlan.Business
             var result = new ShiftPlanData();
 
             var count = 0;
+            var dayCount = 0;
             foreach (var line in lines.Where(w => !w.StartsWith("#")))
             {
                 if (count == 0)
@@ -236,45 +142,19 @@ namespace ShiftPlan.Business
 
                     var dayEntry = new DayEntry
                     {
+                        Date = result.Start.AddDays(dayCount),
                         Value = line.Replace("|h", ""),
                         Type = holiday ? CustomEnums.DayType.Holiday : CustomEnums.DayType.Normal
                     };
 
                     result.Days.Add(dayEntry);
+                    dayCount++;
                 }
 
                 count++;
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Loads the template
-        /// </summary>
-        /// <returns>The content of the template</returns>
-        private string LoadTemplate()
-        {
-            var path = Path.Combine(Helper.GetBaseFolder(), "index.html");
-
-            return File.ReadAllText(path);
-        }
-
-        /// <summary>
-        /// Saves the content
-        /// </summary>
-        /// <param name="content">The content</param>
-        /// <returns>The destination file</returns>
-        private FileInfo SaveData(string content)
-        {
-            var dir = Path.Combine(Helper.GetBaseFolder(), "files");
-            Directory.CreateDirectory(dir);
-
-            var file = Path.Combine(dir, $"ShiftPlan_{DateTime.Now:yyyyMMdd_HHmmss}.html");
-
-            File.WriteAllText(file, content);
-
-            return new FileInfo(file);
         }
 
         /// <summary>

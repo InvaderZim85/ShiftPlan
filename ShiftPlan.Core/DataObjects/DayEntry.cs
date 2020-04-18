@@ -59,12 +59,11 @@ namespace ShiftPlan.Core.DataObjects
         /// Gets the week number (only for the view)
         /// </summary>
         [JsonIgnore]
-        public string CalendarWeek => Helper.GetCalendarWeek(Date).ToString();
+        public int CalendarWeek => Helper.GetCalendarWeek(Date);
 
         /// <summary>
-        /// Gets or sets the value which indicates if the entry is enabled or not
+        /// Gets the value which indicates if the entry is enabled (only for the view)
         /// </summary>
-        [JsonIgnore]
         public bool Enabled => Type != CustomEnums.DayType.Weekend;
         #endregion
     }

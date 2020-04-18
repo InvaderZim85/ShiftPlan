@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using ShiftPlan.Core;
+using ShiftPlan.Core.Business;
 using ShiftPlan.Core.DataObjects;
 using ZimLabs.WpfBase;
 
@@ -167,7 +168,15 @@ namespace ShiftPlan.Planner.Ui.ViewModel
 
             var jsonContent = data.ToJson();
 
-            await _dialogCoordinator.ShowMessageAsync(this, "JSON Data", jsonContent);
+            var result = MailManager.SendMail(Helper.Settings.Mail, new MailData
+            {
+                Subject = "ShiftPlan",
+                Receiver = "shift@de-boddels.de",
+                Body = jsonContent
+            });
+
+            await _dialogCoordinator.ShowMessageAsync(this, "Mail",
+                result ? "Mail was send." : "An error has occured while sending the mail.");
         }
     }
 }
