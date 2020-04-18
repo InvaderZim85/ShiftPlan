@@ -82,9 +82,6 @@
     <Compile Include="ServiceManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="readme.txt" />
     <None Include="App.config" />
     <None Include="ExampleContent.json" />
